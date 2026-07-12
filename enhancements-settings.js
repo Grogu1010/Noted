@@ -1,7 +1,7 @@
 (() => {
   const key = "noted-ui-settings-v1";
   const defaults = {
-    appearance: "system",
+    appearance: "light",
     compactSidebar: false,
     wideEditor: false,
     reducedMotion: false,
@@ -9,8 +9,15 @@
   };
 
   function readSettings() {
-    try { return { ...defaults, ...JSON.parse(localStorage.getItem(key) || "{}") }; }
-    catch { return { ...defaults }; }
+    try {
+      const stored = JSON.parse(localStorage.getItem(key) || "{}");
+      if (!stored.appearance || stored.appearance === "system") stored.appearance = "light";
+      const settings = { ...defaults, ...stored };
+      localStorage.setItem(key, JSON.stringify(settings));
+      return settings;
+    } catch {
+      return { ...defaults };
+    }
   }
 
   function writeSettings(settings) {
@@ -20,7 +27,7 @@
 
   function applySettings(settings = readSettings()) {
     const root = document.documentElement;
-    root.dataset.notedAppearance = settings.appearance;
+    root.dataset.notedAppearance = settings.appearance === "dark" ? "dark" : "light";
     root.classList.toggle("noted-compact-sidebar", settings.compactSidebar);
     root.classList.toggle("noted-wide-editor", settings.wideEditor);
     root.classList.toggle("noted-reduced-motion", settings.reducedMotion);
@@ -60,7 +67,7 @@
     const body = backdrop.querySelector(".noted-settings-body");
 
     const appearance = document.createElement("select");
-    appearance.innerHTML = '<option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option>';
+    appearance.innerHTML = '<option value="light">Light</option><option value="dark">Dark</option>';
     appearance.value = settings.appearance;
     appearance.addEventListener("change", () => {
       const next = readSettings(); next.appearance = appearance.value; writeSettings(next);
