@@ -1,0 +1,62 @@
+/* Noted enhancement layer */
+.canvas-toggle {
+  display: grid !important;
+  color: #555d6a;
+  background: #ffffffc2;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  box-shadow: 0 3px 9px #302a2106;
+  transition: all .14s;
+}
+.canvas-toggle:hover {
+  color: var(--blue);
+  border-color: var(--line-strong);
+  background: #fff;
+  transform: translateY(-1px);
+}
+.media-more,
+.tree-menu {
+  color: #555d6a;
+  background: #ffffffed;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 3px 9px #302a2108;
+  transition: all .14s;
+}
+.media-more:hover,
+.tree-menu:hover {
+  color: var(--blue);
+  border-color: var(--line-strong);
+  background: #fff;
+  transform: translateY(-1px);
+}
+.canvas .add-link-preview {
+  margin-top: 8px;
+}
+.enhancement-link-icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 17px;
+  line-height: 1;
+}
+.link-media-item {
+  border-color: #3156d929;
+}
+.canvas-link-overlay {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.canvas-link-overlay img {
+  transition: transform .18s ease;
+}
+.canvas-link-overlay:hover img {
+  transform: scale(1.015);
+}
+@media (max-width: 1120px) {
+  .canvas-toggle { display: grid !important; }
+}
