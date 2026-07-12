@@ -46,9 +46,64 @@
     }
   }
 
-  new MutationObserver(makeCardsClickable).observe(document.documentElement, {
+  function buildAddMenu() {
+    const canvas = document.querySelector(".canvas");
+    if (!canvas || canvas.querySelector(".canvas-add-menu")) return;
+
+    const addFile = canvas.querySelector(".add-media:not(.add-link-preview)");
+    const addLink = canvas.querySelector(".add-link-preview");
+    if (!addFile || !addLink) return;
+
+    const menu = document.createElement("div");
+    menu.className = "canvas-add-menu";
+
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "canvas-add-trigger";
+    trigger.setAttribute("aria-label", "Add to Canvas");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.innerHTML = '<span aria-hidden="true">+</span>';
+
+    const actions = document.createElement("div");
+    actions.className = "canvas-add-actions";
+
+    addFile.classList.add("canvas-add-option");
+    addFile.innerHTML = '<span class="canvas-add-option-icon" aria-hidden="true">＋</span><span>Add File</span>';
+
+    addLink.classList.add("canvas-add-option");
+    addLink.innerHTML = '<span class="canvas-add-option-icon" aria-hidden="true">↗</span><span>Add Link</span>';
+
+    actions.append(addFile, addLink);
+    menu.append(trigger, actions);
+    canvas.append(menu);
+
+    const setOpen = (open) => {
+      menu.classList.toggle("open", open);
+      trigger.setAttribute("aria-expanded", String(open));
+    };
+
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setOpen(!menu.classList.contains("open"));
+    });
+
+    actions.addEventListener("click", () => setOpen(false));
+    document.addEventListener("click", (event) => {
+      if (!menu.contains(event.target)) setOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+  }
+
+  function enhance() {
+    makeCardsClickable();
+    buildAddMenu();
+  }
+
+  new MutationObserver(enhance).observe(document.documentElement, {
     childList: true,
     subtree: true,
   });
-  window.addEventListener("DOMContentLoaded", makeCardsClickable);
+  window.addEventListener("DOMContentLoaded", enhance);
 })();
