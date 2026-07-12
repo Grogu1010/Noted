@@ -23,7 +23,7 @@
       }
 
       const defaultTitle = url.hostname.replace(/^www\./, "");
-      const title = window.prompt("Preview title", defaultTitle)?.trim() || defaultTitle;
+      const title = window.prompt("Link title", defaultTitle)?.trim() || defaultTitle;
       const activeTitle = document.querySelector(".title-input")?.value?.trim() || "";
 
       let store;
@@ -39,11 +39,11 @@
       target.media ||= [];
       target.media.push({
         id: `link-${Date.now()}`,
-        type: "image",
+        type: "link",
         name: title,
         caption: url.hostname.replace(/^www\./, ""),
-        url: window.makePreviewDataUrl(title, url.hostname),
         linkUrl: url.href,
+        previewUrl: window.makePreviewDataUrl(title, url.hostname),
       });
 
       if (target.id !== "welcome") {
