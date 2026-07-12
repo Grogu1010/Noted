@@ -107,16 +107,21 @@
 
   function renderUnfiledNotes() {
     const sidebar = document.querySelector(".sidebar");
-    const heading = sidebar?.querySelector(".folder-heading");
-    if (!sidebar || !heading) return;
+    const tree = sidebar?.querySelector(".tree");
+    if (!sidebar || !tree) return;
+
     const notes = (readStore()?.notes || []).filter((note) => note.folderId == null);
     const signature = notes.map((note) => `${note.id}:${note.title}:${note.updated || ""}`).join("|");
-    let section = sidebar.querySelector(".unfiled-notes");
+    let section = tree.querySelector(":scope > .unfiled-notes");
+
     if (!section) {
       section = document.createElement("section");
       section.className = "unfiled-notes";
-      heading.insertAdjacentElement("afterend", section);
+      tree.prepend(section);
+    } else if (tree.firstElementChild !== section) {
+      tree.prepend(section);
     }
+
     if (section.dataset.signature === signature) return;
     section.dataset.signature = signature;
 
